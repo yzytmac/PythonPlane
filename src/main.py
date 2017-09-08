@@ -3,6 +3,73 @@ import pygame
 from pygame import *
 import time
 
+speed = 50
+
+
+class HeroPlane(object):
+    def __init__(self, screen):
+        self.x = 190
+        self.maxx = 380
+        self.y = 700
+        self.maxy = 725
+        self.img = pygame.image.load('../feiji/hero.gif')
+        self.screen = screen
+
+    def display(self):
+        self.screen.blit(self.img,(self.x,self.y))
+
+    def up(self):
+        if self.y > 0:
+            self.y -= speed
+
+    def down(self):
+        if self.y < self.maxy:
+            self.y += speed
+
+    def left(self):
+        if self.x > 0:
+            self.x -= speed
+
+    def right(self):
+        if self.x < self.maxx:
+            self.x += speed
+
+
+
+def PlaneContral(plane):
+    # 获取事件，比如按键等
+    for event in pygame.event.get():
+
+        # 判断是否是点击了退出按钮
+        if event.type == QUIT:
+            print("exit")
+            exit()
+        # 判断是否是按下了键
+        elif event.type == KEYDOWN:
+            # 检测按键是否是a或者left
+            if event.key == K_w or event.key == K_UP:
+                print('up')
+                plane.up()
+
+            # 检测按键是否是d或者right
+            elif event.key == K_s or event.key == K_DOWN:
+                print('down')
+                plane.down()
+
+            # 检测按键是否是a或者left
+            if event.key == K_a or event.key == K_LEFT:
+                print('left')
+                plane.left()
+
+            # 检测按键是否是d或者right
+            elif event.key == K_d or event.key == K_RIGHT:
+                print('right')
+                plane.right()
+
+            # 检测按键是否是空格键
+            elif event.key == K_SPACE:
+                print('space')
+
 
 def main():
     # 创建一个窗口
@@ -12,56 +79,13 @@ def main():
     background = pygame.image.load('../feiji/background.png')
 
     # 创建一个英雄
-    hero = pygame.image.load('../feiji/hero.gif')
-
-    x = 190
-    maxx = 380
-    y = 700
-    maxy = 725
-    speed = 50
+    hero = HeroPlane(screen)
 
     # 将背景贴到窗口
     while True:
         screen.blit(background, (0, 0))
-        screen.blit(hero, (x, y))
-
-        # 获取事件，比如按键等
-        for event in pygame.event.get():
-
-            # 判断是否是点击了退出按钮
-            if event.type == QUIT:
-                print("exit")
-                exit()
-            # 判断是否是按下了键
-            elif event.type == KEYDOWN:
-                # 检测按键是否是a或者left
-                if event.key == K_w or event.key == K_UP:
-                    print('up')
-                    if y > 0:
-                        y -= speed
-
-                # 检测按键是否是d或者right
-                elif event.key == K_s or event.key == K_DOWN:
-                    print('down')
-                    if y < maxy:
-                        y += speed
-
-                # 检测按键是否是a或者left
-                if event.key == K_a or event.key == K_LEFT:
-                    print('left')
-                    if x > 0:
-                        x -= speed
-
-                # 检测按键是否是d或者right
-                elif event.key == K_d or event.key == K_RIGHT:
-                    print('right')
-                    if x < maxx:
-                        x += speed
-
-                # 检测按键是否是空格键
-                elif event.key == K_SPACE:
-                    print('space')
-
+        hero.display()
+        PlaneContral(hero)
         pygame.display.update()
         time.sleep(0.01)
 
