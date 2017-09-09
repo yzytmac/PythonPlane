@@ -14,9 +14,13 @@ class HeroPlane(object):
         self.maxy = 725
         self.img = pygame.image.load('../feiji/hero.gif')
         self.screen = screen
+        self.bullte_list = []
+		
 
     def display(self):
         self.screen.blit(self.img,(self.x,self.y))
+        for b in self.bullte_list:
+			b.display()
 
     def up(self):
         if self.y > 0:
@@ -33,8 +37,25 @@ class HeroPlane(object):
     def right(self):
         if self.x < self.maxx:
             self.x += speed
+            
+    def shoot(self):
+        self.bullte_list.append(Bullet(self))
+        
+            
 
+ 
+		
 
+class Bullet(object):
+	def __init__(self,plane):
+		self.x = plane.x+40
+		self.y = plane.y-10
+		self.screen = plane.screen
+		self.img = pygame.image.load('../feiji/bullet.png')
+		
+	def display(self):
+		self.screen.blit(self.img,(self.x,self.y))
+		self.y-=5
 
 def PlaneContral(plane):
     # 获取事件，比如按键等
@@ -69,6 +90,7 @@ def PlaneContral(plane):
             # 检测按键是否是空格键
             elif event.key == K_SPACE:
                 print('space')
+                plane.shoot()
 
 
 def main():
