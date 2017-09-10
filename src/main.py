@@ -42,7 +42,27 @@ class HeroPlane(object):
         self.bullte_list.append(Bullet(self))
         
             
+class EnemyPlane(object):
+    def __init__(self, screen):
+        self.x = 200
+        self.y = 0
+        self.img = pygame.image.load('../feiji/enemy0.png')
+        self.screen = screen
+        self.bullte_list = []
+		
 
+    def display(self):
+        self.screen.blit(self.img,(self.x,self.y))
+        for b in self.bullte_list:
+	    b.display()
+
+
+    def down(self):
+        self.y += 5
+
+            
+    def shoot(self):
+        self.bullte_list.append(Bullet(self))
  
 		
 
@@ -103,10 +123,15 @@ def main():
     # 创建一个英雄
     hero = HeroPlane(screen)
 
+    #创建一个敌人的飞机
+    enemy = EnemyPlane(screen)
+
     # 将背景贴到窗口
     while True:
         screen.blit(background, (0, 0))
         hero.display()
+        enemy.display()
+        enemy.down()
         PlaneContral(hero)
         pygame.display.update()
         time.sleep(0.01)
